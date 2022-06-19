@@ -9,21 +9,30 @@ client = discord.Client()
 client = commands.Bot(command_prefix = '!')
 
 @client.command()
-async def nitrogen(ctx):
-  code = "https://discord.gift/" + ('').join(
-	random.choices(string.ascii_letters + string.digits, k=16))
-  embed = discord.Embed(title="Here is the generated nitro link!", description=f"{code}")
-  embed.set_thumbnail(url='https://i.ibb.co/hf4yqpp/Nitro-badge.png')
-  embed.set_footer(text="Source Code: https://github.com/Ocryol1337/Discord-Nitro-Generator-Bot")
-  await ctx.send(embed=embed)
+async def instagram(ctx, *, name: str = 'officialrickastley') -> None:
+    r       = requests.get(f"https://api.popcat.xyz/instagram?user={name}")
+    nameinfo     = r.json()
+    em      = discord.Embed(color=000000)
+    fields  = [ 
+        {'name': 'Username:',          'value': nameinfo['username']},
+        {'name': 'Full Name:',     'value': nameinfo['full_name']},
+        {'name': 'Biography:',     'value': nameinfo['biography']},
+        {'name': 'Posts:',        'value': nameinfo['posts']},
+        {'name': 'Reels:',   'value': nameinfo['reels']},
+        {'name': 'Followers:',     'value': nameinfo['followers']},
+        {'name': 'Following:',         'value': nameinfo['following']},
+        {'name': 'Private Account:',    'value': nameinfo['private']},
+        {'name': 'Verified:',   'value': nameinfo['verified']},
+    ]
+    for field in fields:
+        if field['value']:
+            em.add_field(name=field['name'], value=field['value'], inline=True)
 
-## This "checks" the discord nitro because with the other one you cannot see if the nitro is valid or not!
-
-@client.command()
-async def nitrogen(ctx):
-  code = "https://discord.gift/" + ('').join(
-	random.choices(string.ascii_letters + string.digits, k=16))
-  await ctx.send(f"{code}")
+    em.set_footer(text='\u200b')
+    em.timestamp = datetime.datetime.utcnow()  
+    em.set_footer(text='Source Code: https://github.com/Ocryol1337/Instagram-Bot') # Please don't remove this part as i'm giving it to everyone :)
+    em.set_thumbnail(url=f'https://api.popcat.xyz/instagram/pfp/{name}')
+    await ctx.send(embed = em)
 
 
 client.run("TOKEN HERE")
