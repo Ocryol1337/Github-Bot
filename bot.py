@@ -8,30 +8,34 @@ client = discord.Client()
 
 client = commands.Bot(command_prefix = '!')
 
+
 @client.command()
-async def instagram(ctx, *, name: str = 'officialrickastley') -> None:
-    r       = requests.get(f"https://api.popcat.xyz/instagram?user={name}")
+async def github(ctx, *, name: str = 'Ocryol1337') -> None:
+    r       = requests.get(f"https://api.popcat.xyz/github/{name}")
     nameinfo     = r.json()
     em      = discord.Embed(color=000000)
     fields  = [ 
-        {'name': 'Username:',          'value': nameinfo['username']},
-        {'name': 'Full Name:',     'value': nameinfo['full_name']},
-        {'name': 'Biography:',     'value': nameinfo['biography']},
-        {'name': 'Posts:',        'value': nameinfo['posts']},
-        {'name': 'Reels:',   'value': nameinfo['reels']},
+        {'name': 'Name:',          'value': nameinfo['name']},
+        {'name': 'Bio:',     'value': nameinfo['bio']},
+        {'name': 'Url:',     'value': nameinfo['url']},
+        {'name': 'Account Type:',        'value': nameinfo['account_type']},
+        {'name': 'Location:',   'value': nameinfo['location']},
+        {'name': 'Twitter:',   'value': nameinfo['twitter']},
+        {'name': 'Public Repos:',    'value': nameinfo['public_repos']},
         {'name': 'Followers:',     'value': nameinfo['followers']},
         {'name': 'Following:',         'value': nameinfo['following']},
-        {'name': 'Private Account:',    'value': nameinfo['private']},
-        {'name': 'Verified:',   'value': nameinfo['verified']},
+        {'name': 'Email:',         'value': nameinfo['email']},
+        {'name': 'Account Created:',   'value': str(nameinfo['created_at'])[0:10]},
     ]
+    avatar_one = f"{nameinfo['avatar']}"
     for field in fields:
         if field['value']:
             em.add_field(name=field['name'], value=field['value'], inline=True)
 
     em.set_footer(text='\u200b')
     em.timestamp = datetime.datetime.utcnow()  
-    em.set_footer(text='Source Code: https://github.com/Ocryol1337/Instagram-Bot') # Please don't remove this part as i'm giving it to everyone :)
-    em.set_thumbnail(url=f'https://api.popcat.xyz/instagram/pfp/{name}')
+    em.set_footer(text='Source code: https://github.com/Ocryol1337/Github-Bot')#change for creator name 
+    em.set_thumbnail(url=f'{avatar_one}')#for gif display
     await ctx.send(embed = em)
 
 
